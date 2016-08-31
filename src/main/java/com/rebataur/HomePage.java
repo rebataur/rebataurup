@@ -10,6 +10,7 @@ import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.image.Image;
+import org.apache.wicket.markup.html.image.NonCachingImage;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.resource.DynamicImageResource;
@@ -25,7 +26,7 @@ public class HomePage extends WebPage {
     public HomePage(final PageParameters parameters) throws SQLException {
         super(parameters);
 
-        add(new Label("version", getApplication().getFrameworkSettings().getVersion()));
+        
 
         final TextField firstNumber = new TextField("first_num", new Model());
         final TextField secondNumber = new TextField("second_num", new Model());
@@ -63,7 +64,7 @@ public class HomePage extends WebPage {
             @Override
             protected byte[] getImageData(IResource.Attributes attributes) {
                 byte[] res = null;
-                rs = DBUtil.executeSQL("SELECT drawchart()");
+                rs = DBUtil.executeSQL("SELECT drawchart('salaries','salary')");
                 try {
                     while (rs.next()) {
 
@@ -78,7 +79,7 @@ public class HomePage extends WebPage {
                 return null;
             }
             };
-        Image image = new Image("img", imageResource);
+        NonCachingImage image = new NonCachingImage("img", imageResource);
 
         this.add(image);
 

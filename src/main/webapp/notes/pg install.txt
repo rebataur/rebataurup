@@ -26,7 +26,7 @@ sudo apt-get install postgresql
 
     Run psql using the postgres user
 
-sudo –u postgres psql postgres
+sudo ï¿½u postgres psql postgres
 
     Set a new password for the postgres user:
 
@@ -52,12 +52,18 @@ sudo service postgresql restart
 
     Create a new database
 
-sudo –u postgres createdb mytestdb
+sudo ï¿½u postgres createdb mytestdb
 
     Run psql with the postgres user again:
 
-psql –U postgres –W
+psql ï¿½U postgres ï¿½W
 
     List the existing databases (your new database should be there now):
 
 \l
+
+
+
+
+LOAD DB
+sudo -u postgres psql db_name < 'file_path'

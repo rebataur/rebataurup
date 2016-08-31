@@ -40,8 +40,10 @@ public class DBUtil {
         source.setUser("postgres");
         source.setPassword("postgres");
         source.setMaxConnections(10);
+        
     }
-
+    
+    
     public static Connection getConn() {
         if (!inited) {
             init();
@@ -65,6 +67,7 @@ public class DBUtil {
             ResultSet rs = stat.executeQuery(sql);
             con.close();
             return rs;
+            
 
         } catch (SQLException ex) {
             Logger.getLogger(DBUtil.class.getName()).log(Level.SEVERE, null, ex);
