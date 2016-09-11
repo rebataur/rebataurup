@@ -1,5 +1,5 @@
 
-CREATE OR REPLACE FUNCTION drawchart (tbl text,col text)
+CREATE OR REPLACE FUNCTION plot_scatter (tbl text,col text, lm int)
   RETURNS bytea
 AS $$
 
@@ -10,10 +10,12 @@ import io
 import numpy as np
 
 #-----------------------------------------------------
-sql = 'select {0} from {1} limit 10'.format(col,tbl)
+
+sql = 'select {0} from {1} limit {2}'.format(col,tbl,lm)
+
 rv = plpy.execute(sql)
 
-sal = [x['salary']/100000 for x in rv ]
+sal = [x[col] for x in rv ]
 
 #-----------------------------------------------------
 
@@ -25,10 +27,6 @@ area = np.pi * (15 )**2  # 0 to 15 point radiuses
 
 plt.scatter(x, y, s=area, c=colors, alpha=0.5)
 
-
-#plt.figure()
-#plt.plot(sal)
-#plt.title("test")
 
 #--------------------------------------------------
 img_buffer = io.BytesIO()
@@ -42,6 +40,6 @@ $$ LANGUAGE plpython3u;
 
 
 
-select drawchart('salaries','salary');
+select plot_scatter('salaries','salary',100);
 
 

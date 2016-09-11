@@ -21,6 +21,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.sql.DataSource;
 import org.postgresql.ds.PGPoolingDataSource;
 
 /**
@@ -39,11 +40,10 @@ public class DBUtil {
         source.setDatabaseName("postgres");
         source.setUser("postgres");
         source.setPassword("postgres");
-        source.setMaxConnections(10);
-        
+        source.setMaxConnections(1000);
+
     }
-    
-    
+
     public static Connection getConn() {
         if (!inited) {
             init();
@@ -60,24 +60,74 @@ public class DBUtil {
         return conn;
     }
 
-    public static ResultSet executeSQL(String sql) {
+    public static ResultSet executeSQL(String sql) throws SQLException {
+        Connection con = null;
         try {
-            Connection con = getConn();
+            con = getConn();
             Statement stat = con.createStatement();
             ResultSet rs = stat.executeQuery(sql);
             con.close();
             return rs;
-            
 
         } catch (SQLException ex) {
             Logger.getLogger(DBUtil.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            con.close();
         }
         return null;
+    }
+
+    public static void executeSQLNoResult(String sql) throws SQLException {
+        Connection con = null;
+        try {
+            con = getConn();
+            Statement stat = con.createStatement();
+            stat.execute(sql);
+            con.close();
+
+        } catch (SQLException ex) {
+            System.out.println(sql);
+//            Logger.getLogger(DBUtil.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            con.close();
+        }
+
+
+    }
+
+    public static void executeSQLBatch(String[] sql) throws SQLException {
+        Connection con = null;
+        try {
+            con = getConn();
+            Statement stat = con.createStatement();
+            for (int i = 0; i < sql.length; i++) {
+
+                stat.addBatch(sql[i]);
+            }
+            stat.executeBatch();
+
+        } catch (SQLException ex) {
+//            for (int i = 0; i < sql.length; i++) {
+//                System.out.println(sql[i]);
+//            }
+            Logger.getLogger(DBUtil.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            con.close();
+        }
+
     }
 
     public static void main(String[] args) throws SQLException {
         init();
         System.out.println(getConn());
         System.out.println(executeSQL("select 1"));
+    }
+
+    public static DataSource getDS() {
+        if (!inited) {
+            init();
+            inited = true;
+        }
+        return source;
     }
 }

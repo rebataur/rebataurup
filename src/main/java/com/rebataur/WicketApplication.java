@@ -1,5 +1,6 @@
 package com.rebataur;
 
+import com.rebataur.service.RebataurService;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.protocol.http.WebApplication;
 
@@ -11,6 +12,8 @@ import org.apache.wicket.protocol.http.WebApplication;
  */
 public class WicketApplication extends WebApplication
 {
+    
+    
 	/**
 	 * @see org.apache.wicket.Application#getHomePage()
 	 */
@@ -30,4 +33,8 @@ public class WicketApplication extends WebApplication
 
 		// add your configuration here
 	}
+        
+        public RebataurService getRebataurService(){
+            return new RebataurService();
+        }
 }
