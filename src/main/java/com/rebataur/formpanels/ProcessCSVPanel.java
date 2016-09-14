@@ -134,6 +134,9 @@ public class ProcessCSVPanel extends Panel {
                                 String val = record.get(i);
                                 defDT = dataModels.get(i).getDataTypeValue() == null ? "TEXT" : dataModels.get(i).getDataTypeValue();
 
+                                if(dataModels.get(i).getApplyRegex() != null && !dataModels.get(i).getApplyRegex().isEmpty()){
+                                    defDT = defDT.replaceAll(dataModels.get(i).getApplyRegex(), defDT);
+                                }
                                 
                                 if (defDT.equals("TEXT") || defDT.equals("DATE")) {
                                     if (defDT.equals("TEXT")) {
@@ -213,6 +216,8 @@ public class ProcessCSVPanel extends Panel {
                     }
 
                 });
+                
+                item.add(new TextField("apply_regex", new PropertyModel(dt,"applyRegex")));
             }
         };
 
@@ -231,6 +236,7 @@ class DataModel implements Serializable {
     }
     private String dataTypeValue;
     private String dataType;
+    private String applyregex;
 
     public String getDataType() {
         return dataType;
@@ -246,6 +252,14 @@ class DataModel implements Serializable {
 
     public void setDataTypeValue(String dataTypeValue) {
         this.dataTypeValue = dataTypeValue;
+    }
+
+    public String getApplyRegex() {
+        return applyregex;
+    }
+
+    public void setApplyRegex(String applyregex) {
+        this.applyregex = applyregex;
     }
 
 }

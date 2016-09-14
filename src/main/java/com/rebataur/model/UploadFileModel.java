@@ -25,6 +25,8 @@ public class UploadFileModel {
     private enum FIELD_TYPE {
         TEXT,INTEGER,BIGINT,DOUBLE,DATE,BOOL,MONEY
     }
+    
+    private String applyRegex;
     private FIELD_TYPE fieldType;
 
     public UploadFileModel() {
@@ -44,6 +46,14 @@ public class UploadFileModel {
 
     public void setFieldType(FIELD_TYPE fieldType) {
         this.fieldType = fieldType;
+    }
+
+    public String getApplyRegex() {
+        return applyRegex;
+    }
+
+    public void setApplyRegex(String applyRegex) {
+        this.applyRegex = applyRegex;
     }
     
     

@@ -1,13 +1,11 @@
-<wicket:panel>
-    
+<wicket:panel>    
     <form wicket:id="plot_form">
+        Select Plot type<select wicket:id="plotType"></select>
         Enter Table Name:<input type="text" wicket:id="tableName"/>
         Enter Column Name:<input type="text" wicket:id="columnName"/>
-        Select Plot type<select wicket:id="plotType"></select>
+        
         Limit<select wicket:id="limit"></select>
         <input type="submit"/>
-    </form>
-    
-    <div wicket:id="plot_image_panel"></div>
-    
+    </form>    
+    <div wicket:id="plot_image_panel"></div>    
 </wicket:panel>

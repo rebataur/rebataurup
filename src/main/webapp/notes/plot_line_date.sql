@@ -30,7 +30,7 @@ fig.autofmt_xdate()
 
 import matplotlib.dates as mdates
 ax.fmt_xdata = mdates.DateFormatter('%Y-%m-%d')
-plt.title(title)
+plt.title(tbl + " - " + title)
 
 #--------------------------------------------------
 img_buffer = io.BytesIO()
@@ -44,6 +44,6 @@ $$ LANGUAGE plpython3u;
 
 
 
-select plot_line_date('infy','closeprice','date','stock price over time',10000);
+select plot_line_date('tcs','closeprice','date','stock price over time',10000);
 
 
