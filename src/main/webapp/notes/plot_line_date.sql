@@ -11,7 +11,7 @@ import numpy as np
 
 #-----------------------------------------------------
 
-sql = 'select {0},{1} from {2} limit {3}'.format(col,dat_col,tbl,lm)
+sql = 'select {0},{1} from {2}  where {1} is not NULL limit {3}'.format(col,dat_col,tbl,lm)
 
 rv = plpy.execute(sql)
 
@@ -44,6 +44,6 @@ $$ LANGUAGE plpython3u;
 
 
 
-select plot_line_date('tcs','closeprice','date','stock price over time',10000);
+select plot_line_date('whv','totalpeople','apptmadedate','stock price over time',99999999);
 
 

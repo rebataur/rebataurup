@@ -36,6 +36,6 @@ $$ LANGUAGE plpython3u;
 
 
 
-select plot_line('salaries','salary',100);
+select plot_line('whv','totalpeople',1454630);
 
 

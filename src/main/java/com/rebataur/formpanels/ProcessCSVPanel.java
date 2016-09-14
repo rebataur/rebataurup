@@ -63,19 +63,18 @@ public class ProcessCSVPanel extends Panel {
             BufferedReader br = new BufferedReader(new FileReader(model.getObject()));
             firstLineCol = br.readLine().split(",");
 
-            boolean anyFieldBlank = true;
-            while (anyFieldBlank) {
-                secondLineCol = br.readLine().split(",");
-                for (int i = 0; i < secondLineCol.length; i++) {
-                    if (secondLineCol[i] == null || secondLineCol[i].isEmpty() || secondLineCol.length != firstLineCol.length) {
-                        anyFieldBlank = true;
-                        break;
-                    } else {
-                        anyFieldBlank = false;
-                    }
-                }
-            }
-
+//            boolean anyFieldBlank = true;
+//            while (anyFieldBlank) {
+//                secondLineCol = br.readLine().split(",");
+//                for (int i = 0; i < secondLineCol.length; i++) {
+//                    if (secondLineCol[i] == null || secondLineCol[i].isEmpty() || secondLineCol.length != firstLineCol.length) {
+//                        anyFieldBlank = true;
+//                        break;
+//                    } else {
+//                        anyFieldBlank = false;
+//                    }
+//                }
+//            }
         } else {
             firstLineCol = new String[]{"No files found"};
             secondLineCol = new String[]{"No Column found"};
@@ -86,7 +85,7 @@ public class ProcessCSVPanel extends Panel {
         final List<DataModel> dataModels = new ArrayList<DataModel>();
         for (int i = 0; i < firstLineCol.length; i++) {
             DataModel dt = new DataModel();
-            dt.setDateType(firstLineCol[i] + " ( " + secondLineCol[i] + " )");
+            dt.setDateType(firstLineCol[i] + " ( " + "--" + " )");
             dataModels.add(dt);
         }
         // Create a form with data drop downs
@@ -120,7 +119,7 @@ public class ProcessCSVPanel extends Panel {
                     //
                     int insertSQLCount = 10;
                     String[] insertSQLArr = new String[insertSQLCount];
-
+                    int cnt = 0;
                     Reader in = new FileReader(model.getObject().toString());
                     Iterable<CSVRecord> records = CSVFormat.EXCEL.parse(in);
                     boolean firstLine = true;
@@ -128,20 +127,25 @@ public class ProcessCSVPanel extends Panel {
                         if (firstLine) {
                             firstLine = false;
                         } else {
-
+                            if (cnt++ == 20) {
+//                                break;
+                            }
                             String values = "";
                             for (int i = 0; i < columns.length; i++) {
-                                String val = record.get(i);
+                                String val = record.get(i).trim();
                                 defDT = dataModels.get(i).getDataTypeValue() == null ? "TEXT" : dataModels.get(i).getDataTypeValue();
 
-                                if(dataModels.get(i).getApplyRegex() != null && !dataModels.get(i).getApplyRegex().isEmpty()){
-                                    defDT = defDT.replaceAll(dataModels.get(i).getApplyRegex(), defDT);
+                                if (dataModels.get(i).getApplyRegex() != null && !dataModels.get(i).getApplyRegex().isEmpty()) {
+                                    val = val.replaceAll(dataModels.get(i).getApplyRegex(), "");
                                 }
-                                
+
                                 if (defDT.equals("TEXT") || defDT.equals("DATE")) {
-                                    if (defDT.equals("TEXT")) {
+
+                                    if (val == null || val.isEmpty()) {
+                                        values += "NULL";
+                                    } else if (defDT.equals("TEXT")) {
                                         values += "'" + val.trim().replace("'", "") + "'";
-                                    } else {
+                                    } else if (defDT.equals("DATE")) {
                                         values += "'" + val + "'";
                                     }
 
@@ -160,7 +164,6 @@ public class ProcessCSVPanel extends Panel {
 
                             String insertSQL = "INSERT INTO " + tableName + " VALUES(" + values + ");";
                             if (insertSQLCount <= 9) {
-
                                 insertSQLArr[insertSQLCount++] = insertSQL;
                             } else {
 
@@ -175,6 +178,7 @@ public class ProcessCSVPanel extends Panel {
                             }
 
                         }
+
                     }
                 } catch (FileNotFoundException ex) {
                     Logger.getLogger(ProcessCSVPanel.class.getName()).log(Level.SEVERE, null, ex);
@@ -216,8 +220,8 @@ public class ProcessCSVPanel extends Panel {
                     }
 
                 });
-                
-                item.add(new TextField("apply_regex", new PropertyModel(dt,"applyRegex")));
+
+                item.add(new TextField("apply_regex", new PropertyModel(dt, "applyRegex")));
             }
         };
 

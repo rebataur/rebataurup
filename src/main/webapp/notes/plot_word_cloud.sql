@@ -46,6 +46,6 @@ $$ LANGUAGE plpython3u;
 
 
 
-select plot_word_cloud('cc','issue',100000);
+select plot_word_cloud('whv','description',1454630);
 
 

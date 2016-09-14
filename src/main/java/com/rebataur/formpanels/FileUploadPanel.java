@@ -70,7 +70,7 @@ public class FileUploadPanel extends Panel {
         form.setMultiPart(true);
 
         // max upload size, 10k
-        form.setMaxSize(Bytes.megabytes(500));
+        form.setMaxSize(Bytes.gigabytes(2));
 
         form.add(fileUpload = new FileUploadField("fileUpload"));
 
